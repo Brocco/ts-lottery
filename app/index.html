@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en" ng-app="lotteryApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Lottery Demo</title>
+    <link rel="stylesheet" href="/styles/lib.css"/>
+    <link rel="stylesheet" href="/styles/app.css"/>
+</head>
+<body class="container" ng-controller="appCtrl as app">
+<div ng-controller="addCtrl as add">
+    <div ng-controller="runCtrl as run">
+        <ul class="nav nav-pills">
+            <li role="presentation" ng-class="{'active': app.activeTab==='enter'}">
+                <a href="#" ng-click="app.setTab('enter')">Enter</a>
+            </li>
+            <li role="presentation" ng-class="{'active': app.activeTab==='run'}">
+                <a href="#" ng-click="run.init(); app.setTab('run')">Run</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" id="add-panel"
+                 class="tab-pane" ng-class="{'active': app.activeTab==='enter'}">
+                <form ng-submit="add.addEntrant(add.newEntrants)">
+                    <div class="form-group">
+                        <label for="add-entrants">Entrant Name(s)</label>
+                        <textarea ng-model="add.newEntrants" required class="form-control" id="add-entrants"
+                                  placeholder="Entrant name(s)"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+                <ul id="entrant-list" class="row">
+                    <li ng-repeat="entrant in add.entrants" class="col-sm-4 col-md-3">
+                        <div class="well well-sm">
+                            {{entrant.name}}
+                            <a href="#" class="btn btn-danger btn-xs remove-entrant"
+                               ng-click="add.deleteEntrant(entrant)">X</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div role="tabpanel" id="run-panel"
+                 class="tab-pane" ng-class="{'active': app.activeTab==='run'}">
+                <div class="row">
+                    <button ng-click="run.drawWinner()" class="btn btn-primary col-xs-6 col-xs-offset-3">
+                        Pick New Winner
+                    </button>
+                </div>
+                <div class="row" ng-show="run.lastWinner">
+                    <div class="col-xs-6 col-xs-offset-3">
+                        <div id="last-winner" class="well">
+                            Last Winner:
+                            {{run.lastWinner.name}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="run-winner-header">
+                    <div class="col-xs-6">Non-Winners</div>
+                    <div class="col-xs-6">Winners</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <ul>
+                            <li ng-repeat="entrant in run.nonWinners" class="col-xs-12">
+                                <div class="well well-sm">
+                                    {{entrant.name}}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-6">
+                        <li ng-repeat="entrant in run.winners" class="col-xs-12">
+                            <div class="well well-sm">
+                                {{entrant.name}}
+                            </div>
+                        </li>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<script src="/js/lib.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>
